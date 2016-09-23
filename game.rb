@@ -28,6 +28,7 @@ class Tetris
          [1, 1],
          [1, 0]]]
     @current_tetris = [0, (TermInfo.screen_size[1]-1)/2, 0, @tetris.sample] #x,y,rotation,tetris
+    @blocks = []
     Curses.curs_set(0)
     Curses.noecho # do not show typed keys
     Curses.init_screen
@@ -60,22 +61,16 @@ class Tetris
   end
 
   def paint_tetris
-    x = @current_tetris[0]
-    y = @current_tetris[1]
+    paint_tetris_by_tetris @current_tetris
 
-    to_paint =  @current_tetris[3]
+    @blocks.each { |b| paint_tetris_by_tetris b} unless @blocks.empty?
+  end
 
-    if @current_tetris[2] == 1
-      to_paint = to_paint.transpose
-    elsif @current_tetris[2] == 2
-      to_paint = to_paint.map{|p| p.reverse}
-    elsif @current_tetris[2] == 3
-      to_paint = to_paint.map{|p| p.reverse}
-      to_paint = to_paint.transpose
-    elsif @current_tetris[2] == 4
-      @current_tetris[2] = 0
+  def paint_tetris_by_tetris tetris
+    x = tetris[0]
+    y = tetris[1]
 
-    end
+    to_paint = get_to_paint_by_tetris tetris
 
 
     to_paint.each do |t|
@@ -88,11 +83,34 @@ class Tetris
             Curses.addstr('00')
           }
         end
+
         y+=2
       end
-      y=@current_tetris[1]
+      y=tetris[1]
       x+=1
     end
+
+  end
+
+  def get_to_paint
+    get_to_paint_by_tetris @current_tetris
+  end
+
+  def get_to_paint_by_tetris tetris
+
+    to_paint = tetris[3]
+
+    if tetris[2] == 1
+      to_paint = to_paint.transpose
+    elsif tetris[2] == 2
+      to_paint = to_paint.map { |p| p.reverse }
+    elsif tetris[2] == 3
+      to_paint = to_paint.map { |p| p.reverse }
+      to_paint = to_paint.transpose
+    elsif tetris[2] == 4
+      tetris[2] = 0
+    end
+    to_paint
   end
 
   def draw_field
@@ -121,7 +139,13 @@ class Tetris
 
   def rotate
     @current_tetris[2] += 1
-    paint
+    if possible? [0,0]
+      paint
+    else
+      @current_tetris[2] += 1
+      paint
+    end
+
   end
 
   def go_right
@@ -145,17 +169,6 @@ class Tetris
     paint
   end
 
-  def possible? num
-    return check_left(num) && check_right_bottom(num)
-  end
-
-  def check_right_bottom(num)
-    @current_tetris[0]+@current_tetris[3].size-1+num[0] <= TermInfo.screen_size[0]-2 && @current_tetris[1]+@current_tetris[3].size+num[1] <= TermInfo.screen_size[1]-2
-  end
-
-  def check_left(num)
-    @current_tetris[1]+num[1] >= 1
-  end
 
   def paint
     Curses.clear
@@ -163,6 +176,43 @@ class Tetris
     paint_tetris
   end
 
+
+  ########CHECK BORDERS##########
+  def possible? num
+    return check_left(num) && check_right_bottom_forLong(num) if @current_tetris[3] == @tetris.first
+    return check_left(num) && check_right_bottom(num)
+  end
+
+  def check_right_bottom(num)
+    check_bottom(num) && current_tetris_padding+1+num[1] <= TermInfo.screen_size[1]-2
+  end
+
+  def current_tetris_padding
+    @current_tetris[1]+get_to_paint[0].size
+  end
+
+  def check_bottom(num)
+    return true if @current_tetris[0]+get_to_paint.size-1+num[0] <= TermInfo.screen_size[0]-2
+    store_block
+  end
+
+  def store_block
+    @blocks << @current_tetris
+    @current_tetris = [0, (TermInfo.screen_size[1]-1)/2, 0, @tetris.sample]
+  end
+
+  def check_right_bottom_forLong(num)
+    return check_bottom(num) && current_tetris_padding+3+num[1] <= TermInfo.screen_size[1]-2 if rotated?
+    check_bottom(num) && current_tetris_padding+num[1] <= TermInfo.screen_size[1]-2
+  end
+
+  def rotated?
+    @current_tetris[2] == 1 || @current_tetris[2] == 3
+  end
+
+  def check_left(num)
+    @current_tetris[1]+num[1] >= 1
+  end
 end
 
 
