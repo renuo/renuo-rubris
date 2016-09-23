@@ -2,39 +2,32 @@ require 'curses'
 include Curses
 require 'terminfo'
 
-class Main
+class Tetris
 
   def run
-    @position = [1, 1]
     @tetris = [
+        [[1],
+         [1],
+         [1],
+         [1]],
+        [[1, 1],
+         [1, 1]],
         [[1, 0],
-         [1, 0],
+         [1, 1],
+         [1, 0]],
+        [[1, 1],
          [1, 0],
          [1, 0]],
         [[1, 1],
-         [1, 1],
-         [0, 0],
-         [0, 0]],
+         [0, 1],
+         [0, 1]],
         [[1, 0],
          [1, 1],
-         [1, 0],
-         [0, 0]],
-        [[1, 1],
-         [1, 0],
-         [1, 0],
-         [0, 0]],
-        [[1, 1],
-         [0, 1],
-         [0, 1],
-         [0, 0]],
-        [[1, 0],
-         [1, 1],
-         [0, 1],
-         [0, 0]],
+         [0, 1]],
         [[0, 1],
          [1, 1],
-         [1, 0],
-         [0, 0]]]
+         [1, 0]]]
+    @current_tetris = [0, (TermInfo.screen_size[1]-1)/2, 0, @tetris.sample] #x,y,rotation,tetris
     Curses.curs_set(0)
     Curses.noecho # do not show typed keys
     Curses.init_screen
@@ -52,7 +45,7 @@ class Main
 
       case Curses.getch
         when 'W', 'w', Curses::Key::UP
-          go_up
+          rotate
         when 'S', 's', Curses::Key::DOWN
           go_down
         when 'A', 'a', Curses::Key::LEFT
@@ -67,10 +60,24 @@ class Main
   end
 
   def paint_tetris
-    to_paint = @tetris.sample
+    x = @current_tetris[0]
+    y = @current_tetris[1]
 
-    x = 0
-    y = 0
+    to_paint =  @current_tetris[3]
+
+    if @current_tetris[2] == 1
+      to_paint = to_paint.transpose
+    elsif @current_tetris[2] == 2
+      to_paint = to_paint.map{|p| p.reverse}
+    elsif @current_tetris[2] == 3
+      to_paint = to_paint.map{|p| p.reverse}
+      to_paint = to_paint.transpose
+    elsif @current_tetris[2] == 4
+      @current_tetris[2] = 0
+
+    end
+
+
     to_paint.each do |t|
 
       t.each do |tt|
@@ -83,9 +90,8 @@ class Main
         end
         y+=2
       end
-      y=0
+      y=@current_tetris[1]
       x+=1
-
     end
   end
 
@@ -113,47 +119,48 @@ class Main
 
   end
 
+  def rotate
+    @current_tetris[2] += 1
+    paint
+  end
+
   def go_right
-    @position[1] += 2 if possible? [0, 2]
+    @current_tetris[1] += 2 if possible? [0, 2]
     paint
   end
 
 
   def go_left
-    @position[1] -= 2 if possible? [0, -2]
+    @current_tetris[1] -= 2 if possible? [0, -2]
     paint
   end
 
   def go_down
-    @position[0] += 1 if possible? [1, 0]
+    @current_tetris[0] += 1 if possible? [1, 0]
     paint
   end
 
   def go_up
-    @position[0] -= 1 if possible? [-1, 0]
+    @current_tetris[0] -= 1 if possible? [-1, 0]
     paint
   end
 
   def possible? num
-    return check_left_top(num) && check_right_bottom(num)
+    return check_left(num) && check_right_bottom(num)
   end
 
   def check_right_bottom(num)
-    @position[0]+num[0] <= TermInfo.screen_size[0]-2 && @position[1]+num[1] <= TermInfo.screen_size[1]-2
+    @current_tetris[0]+@current_tetris[3].size-1+num[0] <= TermInfo.screen_size[0]-2 && @current_tetris[1]+@current_tetris[3].size+num[1] <= TermInfo.screen_size[1]-2
   end
 
-  def check_left_top(num)
-    @position[0]+num[0] >= 1 && @position[1]+num[1] >= 1
+  def check_left(num)
+    @current_tetris[1]+num[1] >= 1
   end
 
   def paint
     Curses.clear
     draw_field
     paint_tetris
-    Curses.setpos(@position[0], @position[1])
-    Curses.attron(color_pair(COLOR_YELLOW) | A_NORMAL) {
-      Curses.addstr('00')
-    }
   end
 
 end
@@ -161,5 +168,5 @@ end
 
 ################
 
-Main.new.run
+Tetris.new.run
 
