@@ -1,2 +1,2 @@
-# ruby-tetris
-# ruby-tetris
+# tetris
+
