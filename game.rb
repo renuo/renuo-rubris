@@ -4,7 +4,8 @@ require 'terminfo'
 
 class Tetris
 
-  def run
+
+  def init_game
     @tetris = [
         [[1],
          [1],
@@ -29,21 +30,31 @@ class Tetris
          [1, 0]]]
     @current_tetris = [0, (TermInfo.screen_size[1]-1)/2, 0, @tetris.sample] #x,y,rotation,tetris
     @blocks = []
+    Curses.stdscr.nodelay = 1
     Curses.curs_set(0)
     Curses.noecho # do not show typed keys
     Curses.init_screen
     Curses.stdscr.keypad(true) # enable arrow keys (required for pageup/down)
     Curses.start_color
-# Determines the colors in the 'attron' below
     Curses.init_pair(COLOR_BLUE, COLOR_BLUE, COLOR_BLUE)
     Curses.init_pair(COLOR_YELLOW, COLOR_YELLOW, COLOR_YELLOW)
 
     paint
     paint_tetris
+  end
+
+  def run
+    init_game
+
+    Thread.new do
+      while true do
+        go_down
+        sleep 1
+      end
+    end
 
     i = 1
     while i != 0 do
-
       case Curses.getch
         when 'W', 'w', Curses::Key::UP
           rotate
@@ -60,10 +71,18 @@ class Tetris
     end
   end
 
+
+  def paint
+    Curses.clear
+    draw_field
+    paint_tetris
+  end
+
+
   def paint_tetris
     paint_tetris_by_tetris @current_tetris
 
-    @blocks.each { |b| paint_tetris_by_tetris b} unless @blocks.empty?
+    @blocks.each { |b| paint_tetris_by_tetris b } unless @blocks.empty?
   end
 
   def paint_tetris_by_tetris tetris
@@ -134,25 +153,22 @@ class Tetris
         Curses.addstr('#')
       }
     end
-
   end
 
   def rotate
     @current_tetris[2] += 1
-    if possible? [0,0]
+    if possible? [0, 0]
       paint
     else
       @current_tetris[2] += 1
       paint
     end
-
   end
 
   def go_right
     @current_tetris[1] += 2 if possible? [0, 2]
     paint
   end
-
 
   def go_left
     @current_tetris[1] -= 2 if possible? [0, -2]
@@ -170,17 +186,19 @@ class Tetris
   end
 
 
-  def paint
-    Curses.clear
-    draw_field
-    paint_tetris
-  end
-
-
   ########CHECK BORDERS##########
   def possible? num
     return check_left(num) && check_right_bottom_forLong(num) if @current_tetris[3] == @tetris.first
-    return check_left(num) && check_right_bottom(num)
+    return check_left(num) && check_right_bottom(num) && not_touch_other_blocks
+  end
+
+  def not_touch_other_blocks
+    return true if @blocks.empty?
+    @blocks.each do |b|
+      if b[0]==@current_tetris[0]+get_to_paint.size
+        store_block
+      end
+    end
   end
 
   def check_right_bottom(num)
@@ -213,6 +231,7 @@ class Tetris
   def check_left(num)
     @current_tetris[1]+num[1] >= 1
   end
+
 end
 
 
