@@ -188,7 +188,7 @@ class Tetris
 
   ########CHECK BORDERS##########
   def possible? num
-    return check_left(num) && check_right_bottom_forLong(num) if @current_tetris[3] == @tetris.first
+    return check_left(num) && check_right_bottom_forLong(num)  && not_touch_other_blocks if @current_tetris[3] == @tetris.first
     return check_left(num) && check_right_bottom(num) && not_touch_other_blocks
   end
 
