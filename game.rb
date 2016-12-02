@@ -230,11 +230,9 @@ class Tetris
   def check_left(num)
     @current_tetris[1]+num[1] >= 1
   end
+  ################
 
 end
-
-
-################
 
 Tetris.new.run
 
