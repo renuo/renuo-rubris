@@ -6,15 +6,31 @@
 
 #### Clone Game and Setup
 
-`git clone git@github.com:renuo/ruby-tetris.git && cd ruby-tetris && bundle install`
+```
+git clone git@github.com:renuo/ruby-tetris.git
+cd ruby-tetris
+bin/setup
+```
 
 or
 
-`git clone git@github.com:renuo/ruby-tetris.git && cd ruby-tetris && bin/setup`
+```
+git clone git@github.com:renuo/ruby-tetris.git
+cd ruby-tetris
+bundle install
+```
 
 #### Start Game
 
-`ruby game.rb` or `bin/run`
+```
+bin/run
+```
+
+or 
+
+```
+ruby game.rb
+```
 
 ### Game Instructions
 
