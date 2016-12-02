@@ -2,7 +2,9 @@
 
 ### Clone and Play (Quick Start)
 
-`git clone git@github.com:renuo/ruby-tetris.git && cd ruby-tetris && bundle install && ruby game.rb`
+```
+git clone git@github.com:renuo/ruby-tetris.git && cd ruby-tetris && bundle install && ruby game.rb
+```
 
 #### Clone Game and Setup
 
