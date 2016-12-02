@@ -4,6 +4,14 @@
 
 `git clone git@github.com:renuo/ruby-tetris.git && cd ruby-tetris && bundle install && ruby game.rb`
 
+#### Clone Game
+
+`git clone git@github.com:renuo/ruby-tetris.git && cd ruby-tetris && bundle install`
+
+#### Start Game
+
+`ruby game.rb`
+
 ### Game Instructions
 
 `[Q]` Exit Game
@@ -20,3 +28,48 @@
 * colorize
 * curses
 * ruby-terminfo
+
+### Tetris Blocks
+
+#### Line
+```
+ [1]
+ [1]
+ [1]
+ [1]
+```
+#### Square
+```
+ [1, 1]
+ [1, 1]
+ ```
+#### Tee
+```
+ [1, 0]
+ [1, 1]
+ [1, 0]
+ ```
+#### J-shape
+```
+ [1, 1]
+ [1, 0]
+ [1, 0]
+ ```
+#### L-shape
+```
+ [1, 1]
+ [0, 1]
+ [0, 1]
+ ```
+#### S-shape
+```
+ [1, 0]
+ [1, 1]
+ [0, 1]
+```
+#### Z-shape
+```
+ [0, 1]
+ [1, 1]
+ [1, 0]
+ ```
