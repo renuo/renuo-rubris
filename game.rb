@@ -185,6 +185,14 @@ class Tetris
     paint
   end
 
+  def store_block
+    @blocks << @current_tetris
+    @current_tetris = [0, (TermInfo.screen_size[1]-1)/2, 0, @tetris.sample]
+  end
+
+  def rotated?
+    @current_tetris[2] == 1 || @current_tetris[2] == 3
+  end
 
   ########CHECK BORDERS##########
   def possible? num
@@ -205,29 +213,20 @@ class Tetris
     check_bottom(num) && current_tetris_padding+1+num[1] <= TermInfo.screen_size[1]-2
   end
 
-  def current_tetris_padding
-    @current_tetris[1]+get_to_paint[0].size
-  end
-
   def check_bottom(num)
     return true if @current_tetris[0]+get_to_paint.size-1+num[0] <= TermInfo.screen_size[0]-2
     store_block
   end
 
-  def store_block
-    @blocks << @current_tetris
-    @current_tetris = [0, (TermInfo.screen_size[1]-1)/2, 0, @tetris.sample]
+  def current_tetris_padding
+    @current_tetris[1]+get_to_paint[0].size
   end
 
   def check_right_bottom_forLong(num)
     return check_bottom(num) && current_tetris_padding+3+num[1] <= TermInfo.screen_size[1]-2 if rotated?
     check_bottom(num) && current_tetris_padding+num[1] <= TermInfo.screen_size[1]-2
   end
-
-  def rotated?
-    @current_tetris[2] == 1 || @current_tetris[2] == 3
-  end
-
+  
   def check_left(num)
     @current_tetris[1]+num[1] >= 1
   end
