@@ -1,3 +1,5 @@
+#### Sandro Räss
+
 # Ruby Console Tetris
 
 ### Clone and Play (Quick Start)
