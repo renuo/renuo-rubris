@@ -8,9 +8,13 @@
 
 `git clone git@github.com:renuo/ruby-tetris.git && cd ruby-tetris && bundle install`
 
+or
+
+`git clone git@github.com:renuo/ruby-tetris.git && cd ruby-tetris && bin/check`
+
 #### Start Game
 
-`ruby game.rb`
+`ruby game.rb` or `bin/run`
 
 ### Game Instructions
 
