@@ -1,8 +1,10 @@
 # Ruby Console Tetris
 
-Clone and Play (Quick Start)
+### Clone and Play (Quick Start)
 
 `git clone git@github.com:renuo/ruby-tetris.git && cd ruby-tetris && bundle install && ruby game.rb`
+
+### Game Instructions
 
 `[Q]` Exit Game
 
@@ -13,3 +15,5 @@ Clone and Play (Quick Start)
 `[A]` Move Left (or Arrow Left)
 
 `[D]` Move Right (or Arrow Right)
+
+### Used Gems
