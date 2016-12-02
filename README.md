@@ -4,7 +4,7 @@
 
 `git clone git@github.com:renuo/ruby-tetris.git && cd ruby-tetris && bundle install && ruby game.rb`
 
-#### Clone Game
+#### Clone Game and Setup
 
 `git clone git@github.com:renuo/ruby-tetris.git && cd ruby-tetris && bundle install`
 
