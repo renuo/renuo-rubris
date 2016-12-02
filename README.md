@@ -17,3 +17,6 @@
 `[D]` Move Right (or Arrow Right)
 
 ### Used Gems
+* colorize
+* curses
+* ruby-terminfo
