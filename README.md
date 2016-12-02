@@ -11,7 +11,7 @@ git clone git@github.com:renuo/ruby-tetris.git && cd ruby-tetris && bundle insta
 ```
 git clone git@github.com:renuo/ruby-tetris.git
 cd ruby-tetris
-bin/setup
+bin/play
 ```
 
 or
@@ -25,14 +25,12 @@ bundle install
 #### Start Game
 
 ```
-bin/run
+bin/play
 ```
 
 or 
 
-```
-ruby game.rb
-```
+`bin/run` or `ruby game.rb`
 
 ### Game Instructions
 
