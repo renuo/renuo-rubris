@@ -3,8 +3,6 @@ include Curses
 require 'terminfo'
 
 class Tetris
-
-
   def init_game
     @tetris = [
         [[1],
@@ -30,6 +28,8 @@ class Tetris
          [1, 0]]]
     @current_tetris = [0, (TermInfo.screen_size[1]-1)/2, 0, @tetris.sample] #x,y,rotation,tetris
     @blocks = []
+
+    #init Curses
     Curses.stdscr.nodelay = 1
     Curses.curs_set(0)
     Curses.noecho # do not show typed keys
@@ -89,7 +89,7 @@ class Tetris
     x = tetris[0]
     y = tetris[1]
 
-    to_paint = get_to_paint_by_tetris tetris
+    to_paint = get_rotated_tetris_to_paint tetris
 
 
     to_paint.each do |t|
@@ -112,10 +112,10 @@ class Tetris
   end
 
   def get_to_paint
-    get_to_paint_by_tetris @current_tetris
+    get_rotated_tetris_to_paint @current_tetris
   end
 
-  def get_to_paint_by_tetris tetris
+  def get_rotated_tetris_to_paint tetris
 
     to_paint = tetris[3]
 

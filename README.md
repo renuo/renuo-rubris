@@ -30,6 +30,7 @@
 * ruby-terminfo
 
 ### Tetris Blocks
+####`@tetris`
 
 #### Line
 ```
@@ -72,4 +73,15 @@
  [0, 1]
  [1, 1]
  [1, 0]
- ```
+```
+ 
+### Code
+ 
+#### @current_tetris
+
+```
+@current_tetris = [0, 0, 0, @tetris.sample]
+```
+```
+@current_tetris = [X-coordinate,Y-coordinate,rotation,tetris]
+```
