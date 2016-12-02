@@ -10,7 +10,7 @@
 
 or
 
-`git clone git@github.com:renuo/ruby-tetris.git && cd ruby-tetris && bin/check`
+`git clone git@github.com:renuo/ruby-tetris.git && cd ruby-tetris && bin/setup`
 
 #### Start Game
 
