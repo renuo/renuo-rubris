@@ -102,8 +102,6 @@ ruby game.rb
 #### @current_tetris
 
 ```
-@current_tetris = [0, 0, 0, @tetris.sample]
-```
-```
-@current_tetris = [X-coordinate,Y-coordinate,rotation,tetris]
+@current_tetris = [      0     ,     0      ,   0    , @tetris.sample]
+#current_tetris = [X-coordinate,Y-coordinate,rotation,  tetris       ]
 ```
