@@ -1,4 +1,6 @@
-# Ruby Console Tetris
+# Renuo Rubris
+
+## Ruby Console Tetris
 
 ### Clone and Play (Quick Start)
 
