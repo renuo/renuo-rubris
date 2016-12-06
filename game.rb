@@ -3,8 +3,8 @@ include Curses
 require 'terminfo'
 
 class Tetris
-  def init_game
-    @tetris = [
+  def init_game #game setup
+    @tetris = [ #possible blocks
         [[1],
          [1],
          [1],
@@ -203,7 +203,9 @@ class Tetris
   def not_touch_other_blocks
     return true if @blocks.empty?
     @blocks.each do |b|
-      if b[0]==@current_tetris[0]+get_to_paint.size
+      if b[0]==@current_tetris[0]+get_to_paint.size &&
+          (b[1] == @current_tetris[1]+get_to_paint.size || b[1] == @current_tetris[1] ||
+          b[1]+get_rotated_tetris_to_paint(b).size == @current_tetris[1])
         store_block
       end
     end
@@ -213,7 +215,7 @@ class Tetris
     check_bottom(num) && current_tetris_padding+1+num[1] <= TermInfo.screen_size[1]-2
   end
 
-  def check_bottom(num)
+  def check_bottom(num) # if x + size of rotated block-1 + move
     return true if @current_tetris[0]+get_to_paint.size-1+num[0] <= TermInfo.screen_size[0]-2
     store_block
   end
@@ -222,7 +224,7 @@ class Tetris
     @current_tetris[1]+get_to_paint[0].size
   end
 
-  def check_right_bottom_forLong(num)
+  def check_right_bottom_forLong(num) #if rotated: bottom ok & padding+3+move < screen else bottom ok & padding + move < screen
     return check_bottom(num) && current_tetris_padding+3+num[1] <= TermInfo.screen_size[1]-2 if rotated?
     check_bottom(num) && current_tetris_padding+num[1] <= TermInfo.screen_size[1]-2
   end
