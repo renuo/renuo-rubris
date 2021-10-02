@@ -56,15 +56,15 @@ class Tetris
     i = 1
     while i != 0 do
       case Curses.getch
-        when 'W', 'w', Curses::Key::UP
+        when 'W','w', 'k', Curses::Key::UP
           rotate
-        when 'S', 's', Curses::Key::DOWN
+        when 'S','s', 'j', Curses::Key::DOWN
           go_down
-        when 'A', 'a', Curses::Key::LEFT
+        when 'A','a', 'h', Curses::Key::LEFT
           go_left
-        when 'D', 'd', Curses::Key::RIGHT
+        when 'D','d', 'l', Curses::Key::RIGHT
           go_right
-        when 'Q', 'q'
+        when 'q'
           i = 0
       end
 
